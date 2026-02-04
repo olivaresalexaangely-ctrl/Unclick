@@ -48,46 +48,43 @@
     /* 💗 CORAZONES */
     .heart {
       position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
       font-size: 22px;
-      animation: floatUp 1.5s ease-out forwards;
+      animation: floatUp 1.6s ease-out forwards;
       pointer-events: none;
     }
 
     @keyframes floatUp {
       from {
-        transform: translate(-50%, -50%) scale(1);
+        transform: translateY(0);
         opacity: 1;
       }
       to {
-        transform: translate(-50%, -120%) scale(1.4);
+        transform: translateY(-120px);
         opacity: 0;
       }
     }
   </style>
 </head>
 
-<body onclick="nextStep()">
+<body onclick="nextStep(event)">
   <div class="container">
     <img id="vibeImage">
     <h1 id="phrase">Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻</h1>
   </div>
 
   <script>
-    const steps = [
-      { type: "text", value: "Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻" },
-      { type: "image", value: "https://drive.google.com/uc?export=view&id=1Ua7Pah8a6mRCoUJ1GuZ2sYPLpqWUcDUV" },
+    const phrases = [
+      "Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻",
+      "A person like you is the most special thing to me.",
+      "Between the same days, I get happier every time I meet you.",
+      "Even though we're far apart now, our hearts are the same. Even without you by your side, yes, even without me by your side."
+    ];
 
-      { type: "text", value: "A person like you is the most special thing to me." },
-      { type: "image", value: "https://drive.google.com/uc?export=view&id=1I7igPxyRtjwdthF6Ts5l3SXEXnUG2RSs" },
-
-      { type: "text", value: "Between the same days, I get happier every time I meet you." },
-      { type: "image", value: "https://drive.google.com/uc?export=view&id=1vWvi1pf61cH2KMnNTH8VGlh79H5Qx3Le" },
-
-      { type: "text", value: "Even though we're far apart now, our hearts are the same. Even without you by my side, yes, even without me by your side." },
-      { type: "image", value: "https://drive.google.com/uc?export=view&id=1h1R8_2O03gCoBLFVHmarCO8j6tIbotv5" }
+    const images = [
+      "https://drive.google.com/uc?export=view&id=1Ua7Pah8a6mRCoUJ1GuZ2sYPLpqWUcDUV",
+      "https://drive.google.com/uc?export=view&id=1I7igPxyRtjwdthF6Ts5l3SXEXnUG2RSs",
+      "https://drive.google.com/uc?export=view&id=1vWvi1pf61cH2KMnNTH8VGlh79H5Qx3Le",
+      "https://drive.google.com/uc?export=view&id=1h1R8_2O03gCoBLFVHmarCO8j6tIbotv5"
     ];
 
     const phraseEl = document.getElementById("phrase");
@@ -95,33 +92,35 @@
 
     let step = 0;
 
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = "💗";
-      document.body.appendChild(heart);
+    function nextStep(event) {
+      createHeart(event.clientX, event.clientY);
 
-      setTimeout(() => heart.remove(), 1500);
-    }
+      if (step >= phrases.length * 2) return;
 
-    function nextStep() {
-      createHeart();
-
-      if (step >= steps.length) return;
-
-      const current = steps[step];
-
-      if (current.type === "text") {
-        phraseEl.textContent = current.value;
+      if (step % 2 === 0) {
+        // mostrar frase
+        phraseEl.textContent = phrases[step / 2];
         phraseEl.style.display = "block";
         imageEl.style.display = "none";
       } else {
-        imageEl.src = current.value;
+        // mostrar imagen
+        imageEl.src = images[Math.floor(step / 2)];
         imageEl.style.display = "block";
         phraseEl.style.display = "none";
       }
 
       step++;
+    }
+
+    function createHeart(x, y) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💗";
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 1600);
     }
   </script>
 </body>
