@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="Foto1.jpg">
   <title>unclick+</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -22,6 +19,7 @@
       color: #FFA6E7;
       cursor: pointer;
       padding: 20px;
+      overflow: hidden;
     }
 
     .container {
@@ -46,12 +44,31 @@
       line-height: 1.4;
       margin: 0;
     }
+
+    /* 💗 CORAZONES */
+    .heart {
+      position: fixed;
+      font-size: 22px;
+      animation: floatUp 1.6s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-120px);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
-<body onclick="changeVibe()">
+<body onclick="nextStep(event)">
   <div class="container">
-    <img id="vibeImage" src="" alt="imagen" />
+    <img id="vibeImage">
     <h1 id="phrase">Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻</h1>
   </div>
 
@@ -60,34 +77,50 @@
       "Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻",
       "A person like you is the most special thing to me.",
       "Between the same days, I get happier every time I meet you.",
-      "Even though we're far apart now, our hearts are the same. Even without you by my side, yes, even without me by your side."
+      "Even though we're far apart now, our hearts are the same. Even without you by your side, yes, even without me by your side."
     ];
 
     const images = [
-      "Foto1.jpg",
-      "Foto2.jpg",
-      "Foto3.jpg",
-      "Foto4.jpg"
+      "https://drive.google.com/uc?export=view&id=1Ua7Pah8a6mRCoUJ1GuZ2sYPLpqWUcDUV",
+      "https://drive.google.com/uc?export=view&id=1I7igPxyRtjwdthF6Ts5l3SXEXnUG2RSs",
+      "https://drive.google.com/uc?export=view&id=1vWvi1pf61cH2KMnNTH8VGlh79H5Qx3Le",
+      "https://drive.google.com/uc?export=view&id=1h1R8_2O03gCoBLFVHmarCO8j6tIbotv5"
     ];
 
     const phraseEl = document.getElementById("phrase");
     const imageEl = document.getElementById("vibeImage");
 
-    let showing = "text";
+    let step = 0;
 
-    function changeVibe() {
-      if (showing === "text") {
-        phraseEl.style.display = "none";
-        imageEl.src = images[Math.floor(Math.random() * images.length)];
-        imageEl.style.display = "block";
-        showing = "image";
-      } else {
-        imageEl.style.display = "none";
-        phraseEl.textContent =
-          phrases[Math.floor(Math.random() * phrases.length)];
+    function nextStep(event) {
+      createHeart(event.clientX, event.clientY);
+
+      if (step >= phrases.length * 2) return;
+
+      if (step % 2 === 0) {
+        // mostrar frase
+        phraseEl.textContent = phrases[step / 2];
         phraseEl.style.display = "block";
-        showing = "text";
+        imageEl.style.display = "none";
+      } else {
+        // mostrar imagen
+        imageEl.src = images[Math.floor(step / 2)];
+        imageEl.style.display = "block";
+        phraseEl.style.display = "none";
       }
+
+      step++;
+    }
+
+    function createHeart(x, y) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💗";
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 1600);
     }
   </script>
 </body>
