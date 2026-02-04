@@ -19,6 +19,7 @@
       color: #FFA6E7;
       cursor: pointer;
       padding: 20px;
+      overflow: hidden;
     }
 
     .container {
@@ -43,16 +44,36 @@
       line-height: 1.4;
       margin: 0;
     }
+
+    /* 💗 CORAZONES */
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      animation: floatUp 1.5s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-60px);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
-<body onclick="nextStep()">
+<body onclick="nextStep(event)">
   <div class="container">
     <img id="vibeImage">
     <h1 id="phrase">Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻</h1>
   </div>
 
   <script>
+    /* 🧩 PASOS EN ORDEN (texto + imagen) */
     const steps = [
       { type: "text", value: "Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻" },
       { type: "image", value: "https://drive.google.com/uc?export=view&id=1Ua7Pah8a6mRCoUJ1GuZ2sYPLpqWUcDUV" },
@@ -72,7 +93,20 @@
 
     let step = 0;
 
-    function nextStep() {
+    function createHeart(x, y) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💗";
+      heart.style.left = x + "px";
+      heart.style.top = y + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 1500);
+    }
+
+    function nextStep(event) {
+      createHeart(event.clientX, event.clientY);
+
       if (step >= steps.length) return;
 
       const current = steps[step];
