@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="Foto1.jpg">
   <title>unclick+</title>
 
   <style>
@@ -30,6 +29,7 @@
       max-width: 500px;
       padding: 24px;
       border-radius: 20px;
+      backdrop-filter: blur(10px);
     }
 
     img {
@@ -49,13 +49,14 @@
   </style>
 </head>
 
-<body onclick="changeVibe()">
+<body onclick="nextStep()">
   <div class="container">
-    <img id="vibeImage" src="" alt="imagen" />
+    <img id="vibeImage" />
     <h1 id="phrase">Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻</h1>
   </div>
 
   <script>
+    // 🔹 FRASES (NO LAS CAMBIÉ)
     const phrases = [
       "Feliz 14 de febrero, linda 👩🏻‍❤️‍👩🏻",
       "A person like you is the most special thing to me.",
@@ -63,32 +64,24 @@
       "Even though we're far apart now, our hearts are the same. Even without you by my side, yes, even without me by your side."
     ];
 
+    // 🔹 IMÁGENES (tus links de Drive ya convertidos)
     const images = [
-      "Foto1.jpg",
-      "Foto2.jpg",
-      "Foto3.jpg",
-      "Foto4.jpg"
+      "https://drive.google.com/uc?export=view&id=1Ua7Pah8a6mRCoUJ1GuZ2sYPLpqWUcDUV",
+      "https://drive.google.com/uc?export=view&id=1I7igPxyRtjwdthF6Ts5l3SXEXnUG2RSs",
+      "https://drive.google.com/uc?export=view&id=1vWvi1pf61cH2KMnNTH8VGlh79H5Qx3Le",
+      "https://drive.google.com/uc?export=view&id=1h1R8_2O03gCoBLFVHmarCO8j6tIbotv5"
     ];
 
     const phraseEl = document.getElementById("phrase");
     const imageEl = document.getElementById("vibeImage");
 
-    let showing = "text";
+    let index = 0;
+    let showingText = true;
 
-    function changeVibe() {
-      if (showing === "text") {
-        phraseEl.style.display = "none";
-        imageEl.src = images[Math.floor(Math.random() * images.length)];
-        imageEl.style.display = "block";
-        showing = "image";
-      } else {
-        imageEl.style.display = "none";
-        phraseEl.textContent =
-          phrases[Math.floor(Math.random() * phrases.length)];
-        phraseEl.style.display = "block";
-        showing = "text";
-      }
-    }
-  </script>
-</body>
-</html>
+    function nextStep() {
+      // si ya llegó al final, no hace nada
+      if (index >= phrases.length - 1 && !showingText) return;
+
+      if (showingText) {
+        // mostrar imagen
+        imageEl.src = images[index]()
